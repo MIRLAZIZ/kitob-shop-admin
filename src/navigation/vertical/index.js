@@ -7,15 +7,15 @@ export default [
     subject: 'all', 
   },
   {
-    title: 'Second page',
+    title: 'categorya',
     to: { name: 'second-page' },
     icon: { icon: 'tabler-file' },
     action: 'create',
     subject: 'all', 
   },
   {
-    title: 'Test',
-    to: { name: 'test' },
+    title: 'prouducts',
+    to: { name: 'product-list' },
     icon: { icon: 'tabler-file' },
 
     // action: 'create',
@@ -23,5 +23,22 @@ export default [
 
     action: 'read',
     subject: 'all',
+  },
+
+  {
+    title: 'customer',
+    to: { name: 'client' },
+    icon: { icon: 'tabler-file' },
+
+
+    action: 'read',
+    subject: 'all',
+  },
+  
+  {
+    title: 'customer',
+    to: { name: 'invoice' },
+    icon: { icon: 'tabler-file' },
+
   },
 ]

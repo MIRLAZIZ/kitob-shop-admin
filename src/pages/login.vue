@@ -1,5 +1,7 @@
+<!-- eslint-disable promise/no-nesting -->
 <!-- eslint-disable array-bracket-newline -->
 <script setup>
+import { useLogin } from '@/@core/stores/login'
 import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
 import { useGenerateImageVariant } from '@core/composable/useGenerateImageVariant'
 import authV2LoginIllustrationBorderedDark from '@images/pages/auth-v2-login-illustration-bordered-dark.png'
@@ -19,10 +21,25 @@ definePage({
   },
 })
 
-const form = ref({
-  email: '',
-  password: '',
-  remember: false,
+const store = useLogin()
+
+const abilityRules = [ 
+  {
+    action: 'manage',
+    subject: 'all',
+  },      
+]
+
+const router = useRouter()
+
+
+
+
+
+
+const adminData = ref({
+  phone: 998901212324,
+  password: '123456',
 })
 
 // const ability = useAbility()
@@ -34,35 +51,22 @@ const sendLogin = () => {
 
   refLogin.value.validate().then(({ valid: isValid }) => {
     if (isValid) {
-      let abilityRules = [ 
-      //   {
-      //   action: 'manage',
-      //   subject: 'all',
 
-        // },
-        { action: 'create',
-          subject: 'all' },
-
-        { action: 'read',
-          subject: 'all' },
-      ]
-      let token = '789|yjFr06EZXSxptVAPJIMZFDVo26SAxtMhlMGPLgkd'
-      let user =  {
-        name: 'Admin',
-        email: 'admin@vuexy',
-        id: 1,
-        role: 'admin',  
-      }
-      useCookie('userAbilityRules').value = abilityRules
-      ability.update(abilityRules)
-      useCookie('userData').value = user
-      useCookie('accessToken').value = token
-
+      store.login(adminData.value)
+        .then(res => {
+          let user = {
+            fullName: res.result.full_name,
+            type: res.result.type,
+            phone: res.result.phone,            
+          }
+          useCookie('userAbilityRules').value = abilityRules
+          ability.update(abilityRules)
+          useCookie('userData').value = user
+          useCookie('accessToken').value = res.result.token
+          router.push('/')
+        
+        })
       
-      console.log('valid')
-      
-    }else {
-      console.log('invalid')
     }
   })
 }
@@ -129,39 +133,39 @@ const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
               <!-- email -->
               <VCol cols="12">
                 <AppTextField
-                  v-model="form.email"
+                  v-model="adminData.phone"
                   autofocus
-                  label="Email"
-                  type="email"
-                  placeholder="johndoe@email.com"
-                  :rules="[requiredValidator, emailValidator]"
+                  label="Phone"
+                  type="number"
+                  :rules="[requiredValidator]"
                 />
               </VCol>
 
               <!-- password -->
               <VCol cols="12">
                 <AppTextField
-                  v-model="form.password"
+                  v-model="adminData.password"
                   label="Password"
                   placeholder="············"
                   :type="isPasswordVisible ? 'text' : 'password'"
                   :append-inner-icon="isPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'"
-                  :rules="[passwordValidator]"      
                   @click:append-inner="isPasswordVisible = !isPasswordVisible"
                 />
 
-                <div class="d-flex align-center flex-wrap justify-space-between mt-2 mb-4">
+                <!--
+                  <div class="d-flex align-center flex-wrap justify-space-between mt-2 mb-4">
                   <VCheckbox
-                    v-model="form.remember"
-                    label="Remember me"
+                  v-model="form.remember"
+                  label="Remember me"
                   />
                   <a
-                    class="text-primary ms-2 mb-1"
-                    href="#"
+                  class="text-primary ms-2 mb-1"
+                  href="#"
                   >
-                    Forgot Password?
+                  Forgot Password?
                   </a>
-                </div>
+                  </div> 
+                -->
 
                 <VBtn
                   block

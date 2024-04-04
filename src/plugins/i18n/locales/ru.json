@@ -1,5 +1,9 @@
 {
   "Home": "Дом",
-  "Second page": "Вторая страница",
-  "Test": "Test"
+  "add category": "добавить категорию",
+  "search": "поиск",
+  "categorya": "категория",
+  "prouducts": "Продукты",
+  "add product": "Добавить продукт",
+  "customer": "Клиент"
 }

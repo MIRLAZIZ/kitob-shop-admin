@@ -2,12 +2,28 @@ import { storeToRefs } from 'pinia'
 import { useTheme } from 'vuetify'
 import { cookieRef, useLayoutConfigStore } from '@layouts/stores/config'
 import { themeConfig } from '@themeConfig'
+import { toast } from 'vue3-toastify'
+import 'vue3-toastify/dist/index.css'
 
 // SECTION Store
 export const useConfigStore = defineStore('config', () => {
   // 👉 Theme
   const userPreferredColorScheme = usePreferredColorScheme()
   const cookieColorScheme = cookieRef('color-scheme', 'light')
+
+
+  // notificaton
+  const successToast = () => {
+    toast.success("success", {
+      autoClose: 3000,
+    }) // ToastOptions
+  }
+
+  const errorToast = errorData => {
+    toast.error(errorData, {
+      autoClose: 3000,
+    }) // ToastOptions
+  }
 
   watch(userPreferredColorScheme, val => {
     if (val !== 'no-preference')
@@ -39,6 +55,8 @@ export const useConfigStore = defineStore('config', () => {
     isVerticalNavCollapsed,
     footerType,
     isAppRTL,
+    successToast,
+    errorToast,
   }
 })
 // !SECTION
