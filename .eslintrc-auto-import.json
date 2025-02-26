@@ -351,6 +351,13 @@
     "watchWithFilter": true,
     "whenever": true,
     "useClipboardItems": true,
-    "useAbility": true
+    "useAbility": true,
+    "DirectiveBinding": true,
+    "MaybeRef": true,
+    "MaybeRefOrGetter": true,
+    "onWatcherCleanup": true,
+    "useId": true,
+    "useModel": true,
+    "useTemplateRef": true
   }
 }

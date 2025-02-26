@@ -3,12 +3,18 @@ import { useInvoice } from '@/@core/stores/invoice'
 import { onMounted } from 'vue'
 import { VDataTable } from 'vuetify/labs/VDataTable'
 import ViewsInvoice from '@/views/invoice/viewsInvoce.vue'
+import DelateDialog from '@/@core/components/DelateDialog.vue'
+import { useConfigStore } from '@/@core/stores/config'
 
 const store = useInvoice()
 const options = ref({ page: 1, itemsPerPage: 12 })
 const loading = ref(false)
 const isDialogVisible = ref(false)
 const viewsItem = ref({})
+const deleteId = ref(null)
+const delateModal = ref(false)
+
+const storeConfig = useConfigStore()
 
 const refresh = () => {
   loading.value = true
@@ -31,13 +37,32 @@ const headers = [
   
 ]
 
+const deleteItem = () => {
+  if(deleteId.value) {
+    store.deleteInvoice(deleteId.value).then(() => {
+      refresh()
 
-// onst STATUS_DRAFT = 'draft';
-//     const STATUS_PENDING = 'pending';
-//     const STATUS_INPROCESS = 'inprocess';
-//     const STATUS_DELIVERED = 'delivered';
-//     const STATUS_COMPLETED = 'completed';
-//     const STATUS_CANCELED = 'canceled';
+      delateModal.value = false
+
+      storeConfig.successToast()
+    })
+      .catch(error => {
+        if(error.response.status >= 500) {
+          storeConfig.errorToast('Serverda xatolik')
+        
+        }
+      })
+  }
+}
+
+const deleteInviece =id => {
+  deleteId.value = id
+  delateModal.value = true
+
+}
+
+
+
 
 
 const resolveStatusVariant = status => {
@@ -79,12 +104,11 @@ onMounted(() => {
                     <!-- Actions -->
       <template #item.actions="{ item }">
       <div class="d-flex gap-1">
-        <IconBtn @click="deleteItem(item.id)">
+        <IconBtn @click="deleteInviece(item.id)">
           <VIcon
             icon="tabler-trash"
             color="error"
           />
-          
         </IconBtn>
 
           <IconBtn @click="viewItem(item)">
@@ -128,6 +152,10 @@ onMounted(() => {
     <ViewsInvoice
      v-model:isDialogVisible="isDialogVisible" 
      :viewsItem="viewsItem"/>
+
+     <DelateDialog 
+     v-model:delateModal="delateModal" 
+     @deleteElement="deleteItem" />
    
   </div>
 </template>

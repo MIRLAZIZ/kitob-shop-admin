@@ -15,12 +15,21 @@ export const useInvoice = defineStore('invoice', {
         })
     },
   
-    async createInvoice(data) {
-      return await $api('invoice/create', {
-        method: 'Post',
-        body: data,
+    async deleteInvoice(id) {
+      return await $api(`payment/delete/${id}`, {
+        method: 'Delete',
       })
     },
 
   },
 })
+
+
+
+
+
+
+
+
+
+
