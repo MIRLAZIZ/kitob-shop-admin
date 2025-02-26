@@ -10,6 +10,7 @@ import NavBarI18n from '@core/components/I18n.vue'
 
 // @layouts plugin
 import { VerticalNavLayout } from '@layouts'
+import { onMounted } from 'vue'
 
 // SECTION: Loading Indicator
 const isFallbackStateActive = ref(false)
@@ -25,6 +26,11 @@ watch([
     refLoadingIndicator.value.resolveHandle()
 }, { immediate: true })
 // !SECTION
+
+onMounted(() => {
+  console.log('menu', navItems);
+  
+})
 </script>
 
 <template>

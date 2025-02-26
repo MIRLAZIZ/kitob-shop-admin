@@ -49,7 +49,7 @@ export const routes = [
   {
     path: 'second-page',
     name: 'second-page',
-    component: () => import('@/pages/second-page'),
+    component: () => import('@/pages/second-page.vue'),
     meta: {
       action: 'create',
       subject: 'all',
